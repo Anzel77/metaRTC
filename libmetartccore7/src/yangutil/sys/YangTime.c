@@ -125,9 +125,12 @@ uint64_t yang_get_ntptime_fromntp(uint64_t pntp){
 				((double)((uint64_t)(pntp & 0x00000000FFFFFFFFULL) * 1000.0) / kMagicNtpFractionalUnit);
 }
 
+// January 1970, in NTP seconds.
+const uint32_t kNtpJan1970 = 2208988800UL;
+
 uint64_t yang_get_ntptime_fromms(uint64_t ms){
 	uint32_t ntp_fractions = ((double)(ms % 1000 / 1000.0)) * kMagicNtpFractionalUnit;
-	uint64_t ntp_second = (ms / 1000)<<32;
+	uint64_t ntp_second = ((ms / 1000) + kNtpJan1970)<<32;
 	return ntp_second  | ntp_fractions;
 }
 
